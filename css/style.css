@@ -1,0 +1,54 @@
+body {
+  background-color: yellow;
+  font-size: 18px;
+}
+a {
+	color: black;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+h1, h2, article {
+  margin: 0;
+	padding: 0;
+}
+header { text-align: center; padding: 1em; }
+header small { text-transform: capitalize; }
+main {
+  margin: auto;
+  width: 1022px;
+}
+@media only screen and (max-width: 1022px) {
+  main {
+    width: auto;
+  }
+}
+article {
+  background-color: white;
+  margin-bottom: 1em;
+}
+article div { padding: 0 1em 1em 1em; }
+article:after {
+  visibility: hidden;
+  display: block;
+  font-size: 0;
+  content: " ";
+  clear: both;
+  height: 0;
+}
+footer p {
+  margin: .5em;
+}
+footer p span.repo {
+  float: right;
+}
+footer {
+  padding: .5em 1em;
+	background-color: white;
+}
+span.v { color: red; }
+span.stars {
+	color: yellow;
+	-webkit-text-stroke: 1px black;
+}
