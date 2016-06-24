@@ -7,7 +7,7 @@ divElement;
 $.ajax({
   type:"GET",
   dataType:"jsonp",
-  url:"http://ajax.googleapis.com/ajax/services/feed/load",
+  url:"//ajax.googleapis.com/ajax/services/feed/load",
   data:{"v":"1.0", "num":"10", "q":"http://feeds.feedburner.com/beppegrillo/rss"},
   success: renderArticles
 });
@@ -20,7 +20,7 @@ function getFoto(html){
 
   while( item = resrc.exec(html) )
     if( item[1].indexOf("embed") === -1 && item[1]) return item[1];
-  // 
+  //
   // while (item = refb.exec(html)) {
   //   if (item[1]) return 'https://graph.facebook.com/' + item[1] + '/picture';
   // }
