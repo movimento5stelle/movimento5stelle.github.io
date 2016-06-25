@@ -44,18 +44,19 @@ function renderArticles(result) {
   var en = result.responseData.feed.entries;
   for (var i = 0; i < en.length; i++) {
     var entry = document.querySelector('#article').content;
-    entry.querySelector('img').src = getFoto(en[i].content);
-    entry.querySelector('h2 a').innerHTML = en[i].title;
-    entry.querySelector('h2 a').href = en[i].link;
-    entry.querySelector('div').innerHTML = strip(en[i].content);
-    entry.querySelector('header small').innerHTML = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
+    entry.querySelector('small').innerHTML = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
 			weekday: "long",
 			day: "numeric",
 			month: "long",
 			year: "numeric",
 			hour: "numeric",
 			minute: "numeric"
-		}) + '<br>' + en[i].categories.join(', ');
+		});
+    entry.querySelector('img').src = getFoto(en[i].content);
+    entry.querySelector('h2 a').innerHTML = en[i].title;
+    entry.querySelector('h2 a').href = en[i].link;
+    entry.querySelector('div').innerHTML = strip(en[i].content);
+    entry.querySelector('header small').innerHTML = en[i].categories.join(', ');
     document.querySelector("section").appendChild(document.importNode(entry, true));
   }
 }

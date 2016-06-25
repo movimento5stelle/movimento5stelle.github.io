@@ -26,7 +26,13 @@ main {
 }
 article {
   background-color: white;
-  margin-bottom: 1em;
+}
+article > small {
+  background-color: black;
+  color: white;
+  display: block;
+  padding: .2em .5em;
+  text-transform: capitalize;
 }
 article div { padding: 0 1em 1em 1em; }
 article:after {
