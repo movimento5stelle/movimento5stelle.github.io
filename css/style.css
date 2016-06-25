@@ -1,6 +1,6 @@
 body {
-  background-color: yellow;
-  font-size: 18px;
+	background-color: yellow;
+	font-size: 18px;
 }
 a {
 	color: black;
@@ -10,44 +10,41 @@ a:hover {
 	text-decoration: underline;
 }
 h1, h2, article {
-  margin: 0;
+	margin: 0;
 	padding: 0;
 }
 header { text-align: center; padding: 1em; }
 header small { text-transform: capitalize; }
-main {
-  margin: auto;
-  max-width: 1022px;
+main, footer {
+	margin: auto;
+	max-width: 1022px;
 }
 article {
-  background-color: white;
+	background-color: white;
 }
 article > small {
-  background-color: black;
-  color: white;
-  display: block;
-  padding: .2em .5em;
-  text-transform: capitalize;
+	background-color: black;
+	color: white;
+	display: block;
+	padding: .2em .5em;
+	text-transform: capitalize;
 }
 article div { padding: 0 1em 1em 1em; }
 article img { width: 100%; }
 article:after {
-  visibility: hidden;
-  display: block;
-  font-size: 0;
-  content: " ";
-  clear: both;
-  height: 0;
+	visibility: hidden;
+	display: block;
+	font-size: 0;
+	content: " ";
+	clear: both;
+	height: 0;
 }
 footer p {
-  margin: .5em;
+	margin: 0;
+	padding: .5em;
 }
 footer p span.repo {
-  float: right;
-}
-footer {
-  padding: .5em 1em;
-	background-color: white;
+	float: right;
 }
 span.v { color: red; }
 span.stars {
