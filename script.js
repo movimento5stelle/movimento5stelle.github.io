@@ -1,8 +1,13 @@
 var excluded = [
   'Leggi e commenta il post  su www.beppegrillo.it',
   '>>> Il Blog delle Stelle ora è anche su Telegram con tutte le news e i commenti.\nRimani aggiornato ---> Clicca qui https://telegram.me/blogdellestelle e UNISCITI. <<<',
-],
-divElement;
+], viewed = [];
+
+if (!localStorage.viewed) {
+  localStorage.viewed = JSON.stringify(viewed);
+} else {
+  viewed = JSON.parse(localStorage.viewed);
+}
 
 $.ajax({
   type:"GET",
@@ -24,7 +29,7 @@ function getFoto(html){
   // while (item = refb.exec(html)) {
   //   if (item[1]) return 'https://graph.facebook.com/' + item[1] + '/picture';
   // }
-  return '';
+  return false;
 }
 
 function strip(html){
@@ -40,10 +45,18 @@ function strip(html){
   return fuori;
 }
 
+function fragment(url){
+  var el = document.createElement('a');
+  el.href = url;
+  var arr = el.pathname.split('/');
+  return 'http://www.ilblogdellestelle.it/' + arr.pop();
+}
+
 function renderArticles(result) {
   var en = result.responseData.feed.entries;
   for (var i = 0; i < en.length; i++) {
-    var entry = document.querySelector('#article').content;
+    var article = document.querySelector('#article').content;
+    var entry = document.importNode(article, true);
     entry.querySelector('small').innerHTML = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
 			weekday: "long",
 			day: "numeric",
@@ -52,9 +65,23 @@ function renderArticles(result) {
 			hour: "numeric",
 			minute: "numeric"
 		});
-    entry.querySelector('img').src = getFoto(en[i].content);
+    var foto = getFoto(en[i].content);
+    if (foto) {
+      var immagine = document.createElement('img');
+      var header = entry.querySelector('header');
+      immagine.src = foto;
+      header.parentNode.insertBefore(immagine, header.nextSibling);
+    }
+    // entry.querySelector('img').src = getFoto(en[i].content);
     entry.querySelector('h2 a').innerHTML = en[i].title;
-    entry.querySelector('h2 a').href = en[i].link;
+    var link = fragment(en[i].link);
+    entry.querySelector('h2 a').href = link;
+    if ($.inArray(link, viewed) < 0) {
+      viewed.push(link);
+      viewed.splice(15);
+      localStorage.viewed = JSON.stringify(viewed);
+      entry.querySelector('small').className += ' new';
+    }
     entry.querySelector('div').innerHTML = strip(en[i].content);
     entry.querySelector('header small').innerHTML = en[i].categories.join(', ');
     document.querySelector("section").appendChild(document.importNode(entry, true));

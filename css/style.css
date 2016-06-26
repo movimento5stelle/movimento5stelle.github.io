@@ -1,5 +1,5 @@
 body {
-	background-color: yellow;
+	background-color: #feda00;
 	font-size: 18px;
 }
 a {
@@ -14,7 +14,10 @@ h1, h2, article {
 	padding: 0;
 }
 header { text-align: center; padding: 1em; }
-header small { text-transform: capitalize; }
+header small.tags {
+  text-transform: capitalize;
+  font-weight: bold;
+}
 main, footer {
 	margin: auto;
 	max-width: 1022px;
@@ -22,29 +25,23 @@ main, footer {
 article {
 	background-color: white;
 }
-article > small {
+article > small.date {
 	background-color: black;
 	color: white;
 	display: block;
 	padding: .2em .5em;
-	text-transform: capitalize;
+  text-transform: uppercase;
+  font-family: monospace;
+  text-align: center;
 }
-article div { padding: 0 1em 1em 1em; }
+article > small.new { color: #feda00; }
+article div.content { padding: 0 1em 1em 1em; }
 article img { width: 100%; }
-article:after {
-	visibility: hidden;
-	display: block;
-	font-size: 0;
-	content: " ";
-	clear: both;
-	height: 0;
-}
 footer p {
 	margin: 0;
-	padding: .5em;
-}
-footer p span.repo {
-	float: right;
+	padding: .5em .8em;
+	text-align: center;
+	font-family: monospace;
 }
 span.v { color: red; }
 span.stars {
