@@ -36,7 +36,7 @@ article > small.date {
 }
 article > small.new { color: #feda00; }
 article div.content { padding: 0 1em 1em 1em; }
-article img { width: 100%; }
+article img { width: 100%; margin-bottom: .5em; }
 footer p {
 	margin: 0;
 	padding: .5em .8em;
