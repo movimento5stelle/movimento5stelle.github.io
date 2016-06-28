@@ -1,22 +1,22 @@
+// Ending strings to remove
 var excluded = [
   'Leggi e commenta il post  su www.beppegrillo.it',
   '>>> Il Blog delle Stelle ora è anche su Telegram con tutte le news e i commenti.\nRimani aggiornato ---> Clicca qui https://telegram.me/blogdellestelle e UNISCITI. <<<',
 ], viewed = [];
 
+// Initialize viewed array in localStorage
 if (!localStorage.viewed) {
   localStorage.viewed = JSON.stringify(viewed);
 } else {
   viewed = JSON.parse(localStorage.viewed);
 }
 
-$.ajax({
-  type:"GET",
-  dataType:"jsonp",
-  url:"//ajax.googleapis.com/ajax/services/feed/load",
-  data:{"v":"1.0", "num":"10", "q":"http://feeds.feedburner.com/beppegrillo/rss"},
-  success: renderArticles
-});
+// Append script, parse rss as jsonp
+var script = document.createElement('script');
+script.src = 'http://ajax.googleapis.com/ajax/services/feed/load?callback=renderArticles&v=1.0&num=10&q=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
+document.getElementsByTagName('head')[0].appendChild(script);
 
+// Get first image src
 function getFoto(html){
   var arr = [],
   resrc = /src="(.*?)"/g,
@@ -32,8 +32,8 @@ function getFoto(html){
   return false;
 }
 
+// Strip html tags (http://stackoverflow.com/a/822486)
 function strip(html){
-  // strip html tags from http://stackoverflow.com/a/822486
   var tmp = document.createElement("div");
   tmp.innerHTML = html;
   var fuori = tmp.textContent || tmp.innerText || "";
@@ -45,17 +45,13 @@ function strip(html){
   return fuori;
 }
 
-function fragment(url){
-  var el = document.createElement('a');
-  el.href = url;
-  var arr = el.pathname.split('/');
-  return 'http://www.ilblogdellestelle.it/' + arr.pop();
-}
-
 function renderArticles(result) {
+  // Get entries array
   var en = result.responseData.feed.entries;
+  // Create article from template
+  var article = document.querySelector('#article').content;
+  // Loop entries
   for (var i = 0; i < en.length; i++) {
-    var article = document.querySelector('#article').content;
     var entry = document.importNode(article, true);
     entry.querySelector('small').innerHTML = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
 			weekday: "long",
@@ -72,18 +68,20 @@ function renderArticles(result) {
       immagine.src = foto;
       header.parentNode.insertBefore(immagine, header.nextSibling);
     }
-    // entry.querySelector('img').src = getFoto(en[i].content);
     entry.querySelector('h2 a').innerHTML = en[i].title;
-    var link = fragment(en[i].link);
+    // True link using last url fragment
+    var link = 'http://www.ilblogdellestelle.it/' + en[i].link.substr(en[i].link.lastIndexOf('/') + 1);
     entry.querySelector('h2 a').href = link;
-    if ($.inArray(link, viewed) < 0) {
+    // Check if article is viewed
+    if (viewed.indexOf(link) === -1) {
       viewed.push(link);
+      // Limit array length
       viewed.splice(15);
       localStorage.viewed = JSON.stringify(viewed);
       entry.querySelector('small').className += ' new';
     }
     entry.querySelector('div').innerHTML = strip(en[i].content);
     entry.querySelector('header small').innerHTML = en[i].categories.join(', ');
-    document.querySelector("section").appendChild(document.importNode(entry, true));
+    document.querySelector("section").appendChild(entry);
   }
 }
