@@ -13,7 +13,7 @@ if (!localStorage.viewed) {
 
 // Append script, parse rss as jsonp
 var script = document.createElement('script');
-script.src = 'http://ajax.googleapis.com/ajax/services/feed/load?callback=renderArticles&v=1.0&num=10&q=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
+script.src = '//ajax.googleapis.com/ajax/services/feed/load?callback=renderArticles&v=1.0&num=10&q=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Get first image src
