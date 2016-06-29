@@ -74,8 +74,10 @@ function renderArticles(result) {
     entry.querySelector('h2 a').href = link;
     // Check if article is viewed
     if (viewed.indexOf(link) === -1) {
-      // Add new element and store array
-      viewed.push(link);
+      // Limit array
+      viewed = viewed.slice(0, 9);
+      // Add new element
+      viewed.unshift(link);
       entry.querySelector('small').className += ' new';
     }
     entry.querySelector('div').innerHTML = strip(en[i].content);
@@ -86,7 +88,6 @@ function renderArticles(result) {
 }
 
 function endLoop() {
-  viewed = viewed.slice(0, 9);
   localStorage.viewed = JSON.stringify(viewed);
   document.body.setAttribute('data-viewed', viewed.length);
   document.body.setAttribute('data-first', viewed[0]);
