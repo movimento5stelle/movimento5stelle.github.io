@@ -65,7 +65,7 @@ function renderArticles(result) {
     if (foto) {
       var immagine = document.createElement('img');
       var header = entry.querySelector('header');
-      immagine.src = foto;
+      immagine.src = foto.slice(5);
       header.parentNode.insertBefore(immagine, header.nextSibling);
     }
     entry.querySelector('h2 a').innerHTML = en[i].title;
@@ -74,9 +74,10 @@ function renderArticles(result) {
     entry.querySelector('h2 a').href = link;
     // Check if article is viewed
     if (viewed.indexOf(link) === -1) {
-      viewed.push(link);
       // Limit array length
-      viewed.splice(15);
+      viewed.splice(20);
+      // Add new element and store array
+      viewed.push(link);
       localStorage.viewed = JSON.stringify(viewed);
       entry.querySelector('small').className += ' new';
     }
