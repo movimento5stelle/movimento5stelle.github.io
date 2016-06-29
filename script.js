@@ -74,15 +74,21 @@ function renderArticles(result) {
     entry.querySelector('h2 a').href = link;
     // Check if article is viewed
     if (viewed.indexOf(link) === -1) {
-      // Limit array length
-      viewed.splice(20);
       // Add new element and store array
       viewed.push(link);
-      localStorage.viewed = JSON.stringify(viewed);
       entry.querySelector('small').className += ' new';
     }
     entry.querySelector('div').innerHTML = strip(en[i].content);
     entry.querySelector('header small').innerHTML = en[i].categories.join(', ');
     document.querySelector("section").appendChild(entry);
   }
+  endLoop();
+}
+
+function endLoop() {
+  viewed = viewed.slice(0, 9);
+  localStorage.viewed = JSON.stringify(viewed);
+  document.body.setAttribute('data-viewed', viewed.length);
+  document.body.setAttribute('data-first', viewed[0]);
+  document.body.setAttribute('data-last', viewed[viewed.length - 1]);
 }
