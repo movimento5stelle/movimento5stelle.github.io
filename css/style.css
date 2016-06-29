@@ -15,7 +15,6 @@ h1, h2, article {
 }
 header { text-align: center; padding: 1em; }
 header small.tags {
-  text-transform: capitalize;
   font-weight: bold;
 }
 main, footer {
@@ -30,7 +29,6 @@ article > small.date {
 	color: white;
 	display: block;
 	padding: .2em .5em;
-  text-transform: uppercase;
   font-family: monospace;
   text-align: center;
 }
