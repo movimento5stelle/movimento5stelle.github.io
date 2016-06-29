@@ -98,10 +98,7 @@ function renderArticles(result) {
     entry.querySelector('div').innerHTML = strip(en[i].content)[0];
     // Set categories
     entry.querySelector('header small').innerHTML = toTitleCase(en[i].categories.join(', '));
-    var categories = en[i].categories.map(function(string){
-      var out = encodeURIComponent(toTitleCase(string));
-      return out;
-    }).join('&labels[]=');
+    var categories = en[i].categories.map(mapCallback).join('&labels[]=');
     // Add write link
     var img = '';
     if (foto) img = '![](' + foto + ')\n\n';
@@ -116,6 +113,11 @@ function renderArticles(result) {
     document.querySelector("section").appendChild(entry);
   }
   endLoop();
+}
+
+function mapCallback(string) {
+  var out = encodeURIComponent(toTitleCase(string));
+  return out;
 }
 
 function endLoop() {
