@@ -65,7 +65,7 @@ function renderArticles(result) {
     if (foto) {
       var immagine = document.createElement('img');
       var header = entry.querySelector('header');
-      immagine.src = foto.slice(5);
+      immagine.src = foto;
       header.parentNode.insertBefore(immagine, header.nextSibling);
     }
     entry.querySelector('h2 a').innerHTML = en[i].title;
