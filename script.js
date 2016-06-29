@@ -4,6 +4,13 @@ var excluded = [
   '>>> Il Blog delle Stelle ora è anche su Telegram con tutte le news e i commenti.\nRimani aggiornato ---> Clicca qui https://telegram.me/blogdellestelle e UNISCITI. <<<',
 ], viewed = [];
 
+// Parse url
+var repository = window.location.host,
+    owner = repository.split('.')[0];
+
+document.querySelector('footer a').href = 'https://github.com/' + owner + '/' + repository;
+document.querySelector('footer a').title = repository;
+
 // Initialize viewed array in localStorage
 if (!localStorage.viewed) {
   localStorage.viewed = JSON.stringify(viewed);
@@ -41,8 +48,9 @@ function strip(html){
     var size = excluded[i].length;
     if (fuori.substr(fuori.length - size) == excluded[i]) fuori = fuori.slice(0,-size);
   }
-  fuori = fuori.trim().replace(/\n{2,}/g, '<br><br>');
-  return fuori;
+  var breakLine = fuori.trim().replace(/\n{2,}/g, '<br><br>');
+  var pulito = fuori.trim();
+  return [breakLine, pulito];
 }
 
 function renderArticles(result) {
@@ -53,35 +61,58 @@ function renderArticles(result) {
   // Loop entries
   for (var i = 0; i < en.length; i++) {
     var entry = document.importNode(article, true);
-    entry.querySelector('small').innerHTML = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
+    // Set date
+    var date = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
 			weekday: "long",
 			day: "numeric",
 			month: "long",
 			year: "numeric",
 			hour: "numeric",
 			minute: "numeric"
-		});
+		}).toUpperCase();
+    entry.querySelector('small').innerHTML = date;
+    // Check image
     var foto = getFoto(en[i].content);
     if (foto) {
+      // Add image
       var immagine = document.createElement('img');
       var header = entry.querySelector('header');
       immagine.src = foto;
       header.parentNode.insertBefore(immagine, header.nextSibling);
     }
+    // Set title
     entry.querySelector('h2 a').innerHTML = en[i].title;
-    // True link using last url fragment
+    // Set link: True link using last url fragment
     var link = 'http://www.ilblogdellestelle.it/' + en[i].link.substr(en[i].link.lastIndexOf('/') + 1);
     entry.querySelector('h2 a').href = link;
     // Check if article is viewed
     if (viewed.indexOf(link) === -1) {
-      // Limit array
+      // Not viewed: limit array
       viewed = viewed.slice(0, 9);
       // Add new element
       viewed.unshift(link);
+      // Apply new class
       entry.querySelector('small').className += ' new';
     }
-    entry.querySelector('div').innerHTML = strip(en[i].content);
-    entry.querySelector('header small').innerHTML = en[i].categories.join(', ');
+    // Set content
+    entry.querySelector('div').innerHTML = strip(en[i].content)[0];
+    // Set categories
+    entry.querySelector('header small').innerHTML = toTitleCase(en[i].categories.join(', '));
+    var categories = en[i].categories.map(function(string){
+      var out = encodeURIComponent(toTitleCase(string));
+      return out;
+    }).join('&labels[]=');
+    // Add write link
+    var img = '';
+    if (foto) img = '![](' + foto + ')\n\n';
+    var writeLink = document.createElement('a');
+    writeLink.href = 'https://github.com/' + owner + '/' + repository + '/issues/new?title=' +
+      encodeURIComponent(en[i].title) + '&labels[]=' + categories + '&body=' +
+      encodeURIComponent('## [' + en[i].title + '](' + link + ')\n\n**' + date + '**\n\n' + img) +
+      encodeURIComponent(strip(en[i].content)[1]);
+    writeLink.innerHTML = 'write';
+    entry.querySelector('small').appendChild(writeLink);
+    // Append element
     document.querySelector("section").appendChild(entry);
   }
   endLoop();
@@ -92,4 +123,8 @@ function endLoop() {
   document.body.setAttribute('data-viewed', viewed.length);
   document.body.setAttribute('data-first', viewed[0]);
   document.body.setAttribute('data-last', viewed[viewed.length - 1]);
+}
+
+function toTitleCase(str) {
+  return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
