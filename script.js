@@ -39,6 +39,21 @@ function getFoto(html){
   return false;
 }
 
+// Get first image src
+function getYoutube(html){
+  var arr = [],
+  resrc = /src="(.*?)"/g,
+  item;
+
+  while( item = resrc.exec(html) )
+    if(item[1]) return item[1];
+  //
+  // while (item = refb.exec(html)) {
+  //   if (item[1]) return 'https://graph.facebook.com/' + item[1] + '/picture';
+  // }
+  return false;
+}
+
 // Strip html tags (http://stackoverflow.com/a/822486)
 function strip(html){
   var tmp = document.createElement("div");
@@ -79,6 +94,17 @@ function renderArticles(result) {
       var header = entry.querySelector('header');
       immagine.src = foto;
       header.parentNode.insertBefore(immagine, header.nextSibling);
+    } else {
+      var ytid = getYoutube(en[i].content);
+      if (ytid) {
+        var id = ytid.substr(ytid.lastIndexOf('/') + 1);
+        foto = 'http://img.youtube.com/vi/' + id + '/0.jpg';
+        var immagine = document.createElement('img');
+        var header = entry.querySelector('header');
+        immagine.src = foto;
+        header.parentNode.insertBefore(immagine, header.nextSibling);
+
+      }
     }
     // Set title
     entry.querySelector('h2 a').innerHTML = en[i].title;
