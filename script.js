@@ -12,10 +12,10 @@ document.querySelector('footer a').href = 'https://github.com/' + owner + '/' + 
 document.querySelector('footer a').title = repository;
 
 // Initialize viewed array in localStorage
-if (!localStorage.viewed1) {
-  localStorage.viewed1 = JSON.stringify(viewed);
+if (!localStorage.viewedM5S) {
+  localStorage.viewedM5S = JSON.stringify(viewed);
 } else {
-  viewed = JSON.parse(localStorage.viewed1);
+  viewed = JSON.parse(localStorage.viewedM5S);
 }
 
 // Append script, parse rss as jsonp
@@ -114,9 +114,9 @@ function renderArticles(result) {
     // Check if article is viewed
     if (viewed.indexOf(link) === -1) {
       // Not viewed: limit array
-      viewed = viewed.slice(0, 9);
+      viewed = viewed.slice(0, 10); // end is not included
       // Add new element
-      viewed.unshift(link);
+      viewed[viewed.length] = link;
       // Apply new class
       entry.querySelector('small').className += ' new';
     }
@@ -147,7 +147,7 @@ function mapCallback(string) {
 }
 
 function endLoop() {
-  localStorage.viewed1 = JSON.stringify(viewed);
+  localStorage.viewedM5S = JSON.stringify(viewed);
   document.body.setAttribute('data-viewed', viewed.length);
   document.body.setAttribute('data-first', viewed[0]);
   document.body.setAttribute('data-last', viewed[viewed.length - 1]);
