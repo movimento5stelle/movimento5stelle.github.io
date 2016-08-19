@@ -129,15 +129,16 @@ function renderArticles(result) {
     // Set categories
     entry.querySelector('header small').innerHTML = toTitleCase(en[i].categories.join(', '));
     var categories = en[i].categories.map(mapCallback).join('&labels[]=');
+	var tagString = en[i].categories.map(toTitleCase).join('\n- ');
     // Add write link
-    var img = '';
-    if (foto) img = '![](' + foto + ')\n\n';
+    var img = foto ? '![](' + foto + ')\n\n' : '';
     var writeLink = document.createElement('a');
+	writeLink.classList.add('save-link');
     writeLink.href = 'https://github.com/' + owner + '/' + repository + '/issues/new?title=' +
       encodeURIComponent(en[i].title) + '&labels[]=' + categories + '&body=' +
-      encodeURIComponent('## [' + en[i].title + '](' + link + ')\n\n**' + date + '**\n\n' + img) +
-      encodeURIComponent(strip(en[i].content)[1]);
-    writeLink.innerHTML = 'write';
+      encodeURIComponent('## [' + en[i].title + '](' + link + ')\n\n**' + date + '**\n\n' + img + '- ' + tagString);
+	// removed content: + encodeURIComponent(strip(en[i].content)[1])
+    writeLink.innerHTML = 'save';
     entry.querySelector('small').appendChild(writeLink);
     // Append element
     document.querySelector("section").appendChild(entry);
