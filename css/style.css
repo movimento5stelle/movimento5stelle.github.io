@@ -9,6 +9,10 @@ a {
 a:hover {
 	text-decoration: underline;
 }
+a.save-link {
+	color: white;
+	float: right;
+}
 h1, h2, article {
 	margin: 0;
 	padding: 0;
