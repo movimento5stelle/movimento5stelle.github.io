@@ -20,7 +20,8 @@ document.querySelector('footer a').title = repository;
 
 // Append script, parse rss as jsonp
 var script = document.createElement('script');
-script.src = '//ajax.googleapis.com/ajax/services/feed/load?callback=renderArticles&v=1.0&num=10&q=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
+// script.src = '//ajax.googleapis.com/ajax/services/feed/load?callback=renderArticles&v=1.0&num=10&q=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
+script.src = '//api.rss2json.com/v1/api.json?callback=renderArticles&rss_url=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Get first image src
@@ -70,14 +71,15 @@ function strip(html){
 
 function renderArticles(result) {
   // Get entries array
-  var en = result.responseData.feed.entries;
+  // var en = result.responseData.feed.entries;
+  var en = result.items;
   // Create article from template
   var article = document.querySelector('#article').content;
   // Loop entries
   for (var i = 0; i < en.length; i++) {
     var entry = document.importNode(article, true);
     // Set date
-    var date = new Date(en[i].publishedDate).toLocaleDateString("it-IT", {
+    var date = new Date(en[i].pubDate).toLocaleDateString("it-IT", {
 			weekday: "long",
 			day: "numeric",
 			month: "long",
