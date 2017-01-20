@@ -21,7 +21,7 @@ document.querySelector('footer a').title = repository;
 // Append script, parse rss as jsonp
 var script = document.createElement('script');
 // script.src = '//ajax.googleapis.com/ajax/services/feed/load?callback=renderArticles&v=1.0&num=10&q=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
-script.src = '//api.rss2json.com/v1/api.json?callback=renderArticles&rss_url=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
+script.src = '//api.rss2json.com/v1/api.json?callback=renderArticles&timer=' + new Date().getTime() + '&rss_url=' + encodeURIComponent('http://feeds.feedburner.com/beppegrillo/rss');
 document.getElementsByTagName('head')[0].appendChild(script);
 
 // Get first image src
