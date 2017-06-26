@@ -3,4 +3,4 @@
 
 ## License
 
-- [No license](https://choosealicense.com/no-license/)
+> [No license](https://choosealicense.com/no-license/)
