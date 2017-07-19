@@ -22,11 +22,25 @@ $(document).ready(function() {
 		accepts:{
 			xml:"application/rss+xml"
 		},
+		crossDomain: true,
 		dataType:"xml",
-		success: render
+		success: render,
+		error: logError,
+		beforeSend: setHeader
   });
 
+	function setHeader(xhr) {
+	  xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+	}
+
+	function logError(data) {
+		console.log('error','render');
+		$('body').css('background', 'orange');
+		render(data.responseText);
+	}
+
 	function render(data) {
+		// console.log('data',$(data).find("item"));
 		//Credit: http://stackoverflow.com/questions/10943544/how-to-parse-an-rss-feed-using-javascript
 		$(data).find("item").each(function () { // or "item" or whatever suits your feed
 				var el = $(this), cat = [];
@@ -36,7 +50,12 @@ $(document).ready(function() {
 				entry.querySelector('h2 a').innerHTML = el.find("title").text();
 				entry.querySelector('h2 a').href = link;
 				// Set content
-				var content = el.find("description").text().replace(/<p><br \/><b><a href=\"(.*?)\">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>/g,'');
+				// var content = el.find("description").text().replace(/<p><br \/><b><a href=\"(.*?)\">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>/g,'');
+				var content = el.find("description")
+					.html()
+					.replace(/<!--\[CDATA\[<p-->/g,'')
+					.replace(/">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>\]\]&gt;/g,'</span>')
+					.replace(/<p><br><b><a href="/g,'<span class="final-link">');
 				entry.querySelector('div').innerHTML = content;
 				// Set date
 				var date = new Date(el.find("pubDate").text()).toLocaleDateString("it-IT", {
