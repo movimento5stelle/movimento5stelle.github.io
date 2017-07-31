@@ -55,7 +55,8 @@ $(document).ready(function() {
 					.html()
 					.replace(/<!--\[CDATA\[<p-->/g,'')
 					.replace(/">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>\]\]&gt;/g,'</span>')
-					.replace(/<p><br><b><a href="/g,'<span class="final-link">');
+					.replace(/<p><br><b><a href="/g,'<span class="final-link">')
+					.replace(/<p><br \/><b><a href="(.*?)">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>]]>/g,'');
 				entry.querySelector('div').innerHTML = content;
 				// Set date
 				var date = new Date(el.find("pubDate").text()).toLocaleDateString("it-IT", {
