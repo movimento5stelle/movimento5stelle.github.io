@@ -1,8 +1,15 @@
 html {
 	overflow-y: scroll;
+	background-color: #c9c9c9;
+	transition: background-color 5s;
+	-moz-transition: background-color 5s;
+	-webkit-transition: background-color 5s;
+	-o-transition: background-color 5s;
+}
+html.yellow{
+	background-color: #feda00;
 }
 body {
-	background-color: #feda00;
 	background-image: url(../images/spinner-black.svg);
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
