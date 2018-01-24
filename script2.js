@@ -15,7 +15,9 @@ $(document).ready(function() {
 	}
 
 	//feed to parse
-	var feed = "https://cors-anywhere.herokuapp.com/http://www.beppegrillo.it/index.xml";
+	var xml_url = "http://www.ilblogdellestelle.it/index.xml";
+	// var xml_url = "http://www.beppegrillo.it/index.xml"
+	var feed = "https://cors-anywhere.herokuapp.com/" + xml_url;
 
 	$.ajax({
 		url: feed,
