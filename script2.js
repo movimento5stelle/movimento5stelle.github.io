@@ -59,6 +59,12 @@ $(document).ready(function() {
 				.replace(/">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>\]\]&gt;/g,'</span>')
 				.replace(/<p><br><b><a href="/g,'<span class="final-link">')
 				.replace(/<p><br \/><b><a href="(.*?)">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>]]>/g,'');
+			image_src = content.match(/rel=\"image_src\" href=\"(.*?)\">/);
+			if (image_src) {
+				content = content.replace(/<img([\w\W]+?)\/>/,'');
+				content="<img src='"+image_src[1]+"'>"+content;
+			}
+			// console.log(image_src);
 			entry.querySelector('div').innerHTML = content;
 			// Set date
 			var date = new Date(el.find("pubDate").text()).toLocaleDateString("it-IT", {
@@ -88,7 +94,7 @@ $(document).ready(function() {
 				// Apply new class
 				entry.querySelector('small').className += ' new';
 			}
-			
+
 			// Add to DOM
 			document.querySelector("section").appendChild(entry);
 		}).promise().done( function(){
