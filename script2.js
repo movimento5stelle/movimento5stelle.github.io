@@ -61,8 +61,11 @@ $(document).ready(function() {
 				.replace(/<p><br \/><b><a href="(.*?)">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>]]>/g,'');
 			image_src = content.match(/rel=\"image_src\" href=\"(.*?)\">/);
 			if (image_src) {
+				frame = content.match(/<iframe ([\w\W]+?)><\/iframe>/);
+				poster_image = content.match(/<img alt=([\w\W]+?) src=\"(.*?)\"/);
+				source = ((poster_image) ? poster_image[2] : image_src[1]);
 				content = content.replace(/<img([\w\W]+?)\/>/,'');
-				content="<img src='"+image_src[1]+"'>"+content;
+				content="<img src='"+source+"'>"+content;
 			}
 			// console.log(image_src);
 			entry.querySelector('div').innerHTML = content;
