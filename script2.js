@@ -64,11 +64,10 @@ $(document).ready(function() {
 				frame = content.match(/<iframe ([\w\W]+?)><\/iframe>/);
 				poster_image = content.match(/<img alt=([\w\W]+?) src=\"(.*?)\"/);
 				source = (poster_image) ? poster_image[2] : image_src[1];
-				corrected = image_src[1].replace(/imm/,'Imm');
+				corrected = (image_src[1].match(/jpeg/)) ? image_src[1].replace(/jpeg/,'jpg').replace(/Imm/,'imm') : image_src[1].replace(/imm/,'Imm');
 				content = content.replace(/<img([\w\W]+?)\/>/,'');
 				content="<img src='"+source+"' onerror='this.onerror=null;this.src=\""+corrected+"\";'>"+content;
 			}
-			// console.log(image_src);
 			entry.querySelector('div').innerHTML = content;
 			// Set date
 			var date = new Date(el.find("pubDate").text()).toLocaleDateString("it-IT", {
