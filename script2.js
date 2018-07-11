@@ -47,9 +47,13 @@ $(document).ready(function() {
 		$(data).find("item").each(function () { // or "item" or whatever suits your feed
 			var el = $(this), cat = [];
 			var entry = document.importNode(document.querySelector('#article').content, true);
+			// Exatract informations
 			var link = el.find("link").text();
+			var title = el.find("title").text();
+			var categories = el.find("category");
+			var kats = [];
 			// Title with link
-			entry.querySelector('h2 a').innerHTML = el.find("title").text();
+			entry.querySelector('h2 a').innerHTML = title;
 			entry.querySelector('h2 a').href = link;
 			// Set content
 			// var content = el.find("description").text().replace(/<p><br \/><b><a href=\"(.*?)\">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>/g,'');
@@ -80,16 +84,16 @@ $(document).ready(function() {
 			}).toUpperCase();
 			entry.querySelector('small').innerHTML = date;
 			// Set categories
-			el.find("category").map( function (i,c) {
-				entry.querySelector('header small').innerHTML += ((i !== 0) ? ', ' : '') + c.innerHTML;
+			categories.map( function (i,c) {
+				kats.push(entry.querySelector('header small').innerHTML += ((i !== 0) ? ', ' : '') + c.innerHTML);
 			});
 			// Check if article is viewed
-			if (viewed.indexOf(el.find("link").text()) === -1) {
+			if (viewed.indexOf(link) === -1) {
 				$('html:not(.yellow)').addClass('yellow');
 				// Not viewed
 				// viewed = viewed.slice(0, 10); // end is not included
 				// Add new element
-				viewed[viewed.length] = el.find("link").text();
+				viewed[viewed.length] = link;
 				// limit array, strip firsts
 				if(viewed.length>15){
 					viewed = viewed.slice((viewed.length-15), viewed.length);
@@ -97,6 +101,16 @@ $(document).ready(function() {
 				// Apply new class
 				entry.querySelector('small').className += ' new';
 			}
+
+			// Add "save" button
+			var writeLink = document.createElement('a');
+			writeLink.classList.add('save-link');
+			writeLink.href = 'https://github.com/' + owner + '/' + repository + '/issues/new?title=' +
+				encodeURIComponent(title) + '&labels[]=' + kats + '&body=' +
+				encodeURIComponent('## [' + title + '](' + link + ')\n\n**' + date + '**\n\n' + content + '- ' + kats.join());
+			// removed content: + encodeURIComponent(strip(en[i].content)[1])
+			writeLink.innerHTML = 'save';
+			entry.querySelector('small').appendChild(writeLink);
 
 			// Add to DOM
 			document.querySelector("section").appendChild(entry);
