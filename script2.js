@@ -51,6 +51,7 @@ $(document).ready(function() {
 			var link = el.find("link").text();
 			var title = el.find("title").text();
 			var categories = el.find("category");
+			var imgx;
 			var kats = [];
 			// Title with link
 			entry.querySelector('h2 a').innerHTML = title;
@@ -70,7 +71,8 @@ $(document).ready(function() {
 				source = (poster_image) ? poster_image[2] : image_src[1];
 				corrected = (image_src[1].match(/jpeg/)) ? image_src[1].replace(/jpeg/,'jpg').replace(/Imm/,'imm') : image_src[1].replace(/imm/,'Imm');
 				content = content.replace(/<img([\w\W]+?)\/>/,'');
-				content="<img src='"+source+"' onerror='this.onerror=null;this.src=\""+corrected+"\";'>"+content;
+				imgx = "<img src='"+source+"' onerror='this.onerror=null;this.src=\""+corrected+"\";'>";
+				content = imgx + content;
 			}
 			entry.querySelector('div').innerHTML = content;
 			// Set date
@@ -107,7 +109,7 @@ $(document).ready(function() {
 			writeLink.classList.add('save-link');
 			writeLink.href = 'https://github.com/' + owner + '/' + repository + '/issues/new?title=' +
 				encodeURIComponent(title) + '&labels[]=' + kats + '&body=' +
-				encodeURIComponent('## [' + title + '](' + link + ')\n\n**' + date + '**\n\n' + content + '- ' + kats.join());
+				encodeURIComponent('## [' + title + '](' + link + ')\n\n**' + date + '**\n\n<img src="' + corrected + '">');
 			// removed content: + encodeURIComponent(strip(en[i].content)[1])
 			writeLink.innerHTML = 'save';
 			entry.querySelector('small').appendChild(writeLink);
