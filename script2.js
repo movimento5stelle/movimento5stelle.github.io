@@ -65,6 +65,7 @@ $(document).ready(function() {
 				.replace(/<p><br><b><a href="/g,'<span class="final-link">')
 				.replace(/<p><br \/><b><a href="(.*?)">Leggi e commenta il post <\/a> su www.beppegrillo.it<\/b><\/p>]]>/g,'');
 			image_src = content.match(/rel=\"image_src\" href=\"(.*?)\">/);
+			corrected = image_src;
 			if (image_src) {
 				frame = content.match(/<iframe ([\w\W]+?)><\/iframe>/);
 				poster_image = content.match(/<img alt=([\w\W]+?) src=\"(.*?)\"/);
