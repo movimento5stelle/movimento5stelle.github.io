@@ -14,7 +14,9 @@ body {
 	background-repeat: no-repeat;
 	background-position: 50% 50%;
 	min-height: 1000px;
-	font-size: 18px;
+	/* font-size: 18px; */
+	/* Inverse font size for Mobile */
+	font-size: calc(1.5em - 0.2vw);
 }
 a {
 	color: black;
