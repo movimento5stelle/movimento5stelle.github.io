@@ -23,7 +23,7 @@ $(document).ready(function() {
 	var xml_url = "https://www.ilblogdellestelle.it/feed";
 	// var xml_url = "http://www.ilblogdellestelle.it/index.xml";
 	// var xml_url = "http://www.beppegrillo.it/index.xml"
-	var feed = "https://cors-anywhere.herokuapp.com/" + xml_url;
+	var feed = "https://afternoon-hollows-35729.herokuapp.com/" + xml_url;
 
 	$.ajax({
 		url: feed,
